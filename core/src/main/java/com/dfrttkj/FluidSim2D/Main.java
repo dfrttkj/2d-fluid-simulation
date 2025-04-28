@@ -1,12 +1,16 @@
 package com.dfrttkj.FluidSim2D;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements ApplicationListener {
+    ShapeRenderer shape;
+
     @Override
     public void create() {
-        // Prepare your application here.
+        this.shape = new ShapeRenderer();
     }
 
     @Override
@@ -16,7 +20,11 @@ public class Main implements ApplicationListener {
 
     @Override
     public void render() {
-        // Draw your application here.
+    shape.begin(ShapeRenderer.ShapeType.Filled);
+    shape.setColor(Color.RED);
+    shape.circle(250, 250, 50);
+
+    shape.end();
     }
 
     @Override

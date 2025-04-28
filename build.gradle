@@ -58,7 +58,7 @@ configure(subprojects) {
 
 subprojects {
   version = "$projectVersion"
-  ext.appName = 'fluid-sim-2D'
+  ext.appName = '2d-fluid-simulation'
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }
@@ -70,4 +70,4 @@ subprojects {
   }
 }
 
-eclipse.project.name = 'fluid-sim-2D' + '-parent'
+eclipse.project.name = '2d-fluid-simulation' + '-parent'
