@@ -35,12 +35,14 @@ public class Main implements ApplicationListener {
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.graphics.setTitle("FPS: " + Gdx.graphics.getFramesPerSecond());
 
 
         shape.begin(ShapeRenderer.ShapeType.Filled);
 
         shape.setColor(Color.RED);
         for (Particle P : test) {
+
             P.draw(shape);
         }
 

@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 public class Particle {
-    public static float radius = 10;
+    public static float radius = 5;
     public Vector2 pos;
 
     public Vector2 velocity;
@@ -26,7 +28,10 @@ public class Particle {
 
     private void logic() {
         float delta = Gdx.graphics.getDeltaTime();
+
         pos.add(velocity.cpy().scl(delta));
+
+
         if (pos.x < 0 || pos.x > 500) {
             velocity.x *= -1;
         }
@@ -34,4 +39,8 @@ public class Particle {
             velocity.y *= -1;
         }
     }
+
+//    public void collision() {
+//
+//    }
 }
