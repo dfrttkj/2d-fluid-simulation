@@ -13,15 +13,16 @@ import java.util.Random;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements ApplicationListener {
-    int numParticles = 529;
-    float mass = 1f;
-    float gravity = 10;
+    int numParticles = 26*26;
+    float mass = 1;
+    float gravity = 1;
+
+    float decay = 0.9995f;
+    float stepSpeed = 10f / 100;
 
     float targetDensity = 3;
-    float pressureMultiplier = 50;
+    float pressureMultiplier = 100;
     float smoothingRadius = 20;
-
-    float[] densities = new float[numParticles];
 
     Random rand;
 
@@ -30,14 +31,15 @@ public class Main implements ApplicationListener {
 
     @Override
     public void create() {
-
         this.rand = new Random(0);
 
         this.shape = new ShapeRenderer();
         this.points = new ArrayList<>(numParticles);
+
+        float distance = 0.9999f;
         for (int i = 0; i < Math.sqrt(numParticles); i++) {
             for (int j = 0; j < Math.sqrt(numParticles); j++) {
-                points.add(new Particle(i*smoothingRadius * 0.99f, j*smoothingRadius));
+                points.add(new Particle(i*smoothingRadius * distance,j*smoothingRadius));
             }
         }
     }
@@ -52,7 +54,7 @@ public class Main implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.graphics.setTitle("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-        float deltaTime = Gdx.graphics.getDeltaTime();
+        float deltaTime = stepSpeed; //Gdx.graphics.getDeltaTime() * stepSpeed;
 
         for (int i = 0; i < numParticles; i++) {
             points.get(i).velocity.y -= gravity * deltaTime; // apply Gravity
@@ -63,10 +65,11 @@ public class Main implements ApplicationListener {
             Vector2 pressureForce = CalculatePressureForce(i);
             Vector2 pressureAcceleration = pressureForce.cpy().scl(1/points.get(i).density);
             points.get(i).velocity.add(pressureAcceleration.scl(deltaTime));
+            points.get(i).velocity.scl(decay);
         }
 
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        shape.setColor(Color.RED);
+        shape.setColor(Color.BLUE);
 
         for (Particle P : points) {
             P.pos.add(P.velocity.cpy().scl(deltaTime));
@@ -106,6 +109,8 @@ public class Main implements ApplicationListener {
     }
 
     public float SmoothingKernel(float radius, float dst) {
+        // C = 315.0 / (64.0 * PI * pow(h, 9))
+        // W = C * pow(h*h - r2, 3)
         if (dst >= radius) return 0;
 
         float volume = (float) ((Math.PI + Math.pow(radius, 4)) / 6);
@@ -115,9 +120,9 @@ public class Main implements ApplicationListener {
     public float SmoothingKernelDerivative(float radius, float dst) {
         if (dst >= radius) return 0;
 
-        float volume = (float)((Math.PI + Math.pow(radius,4)) / 6);
+        float scale = (float)(12 / (Math.pow(radius, 4) * Math.PI));
         // derivative of (h - r)^2  is  -2*(h - r)
-        return -2 * (radius - dst) / volume;
+        return (radius - dst) * scale;
     }
 
     public float CalculateDensity(int idx) {
@@ -150,10 +155,10 @@ public class Main implements ApplicationListener {
 
             float slope = SmoothingKernelDerivative(smoothingRadius, dst);
             float density = points.get(i).density;
-            float sharedPressure = CalculateSharedPressure(density, points.get(i).density);
+            float sharedPressure = CalculateSharedPressure(density, points.get(ParticleIndex).density);
             pressureForce.add(dir.cpy().scl( sharedPressure * slope * mass / density));
         }
 
-        return pressureForce.scl(-1);
+        return pressureForce.scl(1);
     }
 }

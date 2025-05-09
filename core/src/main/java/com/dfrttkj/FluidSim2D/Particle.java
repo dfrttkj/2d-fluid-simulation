@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Particle {
-    public static float radius = 5;
+    public static float radius = 25;
     public Vector2 pos;
     public float density;
     public Vector2 velocity;
@@ -26,11 +26,12 @@ public class Particle {
     public void resolveCollisions() {
         if (pos.x < 0 || pos.x > Gdx.graphics.getHeight()) {
             pos.x = MathUtils.clamp(pos.x, 0, Gdx.graphics.getHeight());
-            velocity.x *= -.1f;
+            velocity.x *= -0.5f;
         }
         if (pos.y < 0 || pos.y > Gdx.graphics.getWidth()) {
             pos.y = MathUtils.clamp(pos.y, 0, Gdx.graphics.getWidth());
-            velocity.y *= -.1f;
+            velocity.y *= -0.5f;
+            // velocity.y += 5;
         }
     }
 
