@@ -34,19 +34,19 @@ public class Particle {
             this.velocity.x *= -.5f;
             this.position.x = Main.PARTICLE_RADIUS;
         }
-         if (this.position.x > (Main.WINDOW_WIDTH - Main.PARTICLE_RADIUS)) {
-             this.velocity.x *= -.5f;
-             this.position.x = (Main.WINDOW_WIDTH - Main.PARTICLE_RADIUS);
-         }
+        if (this.position.x > (Main.WINDOW_WIDTH - Main.PARTICLE_RADIUS)) {
+         this.velocity.x *= -.5f;
+         this.position.x = (Main.WINDOW_WIDTH - Main.PARTICLE_RADIUS);
+        }
 
-         if (this.position.y < Main.PARTICLE_RADIUS) {
-             this.velocity.y *= -.5f;
-             this.position.y = Main.PARTICLE_RADIUS;
-         }
-         if (this.position.y > (Main.WINDOW_HEIGHT - Main.PARTICLE_RADIUS)) {
-             this.velocity.y *= -.5f;
-             this.position.y = (Main.WINDOW_HEIGHT - Main.PARTICLE_RADIUS);
-         }
+        if (this.position.y < Main.PARTICLE_RADIUS) {
+         this.velocity.y *= -.5f;
+         this.position.y = Main.PARTICLE_RADIUS;
+        }
+        if (this.position.y > (Main.WINDOW_HEIGHT - Main.PARTICLE_RADIUS)) {
+         this.velocity.y *= -.5f;
+         this.position.y = (Main.WINDOW_HEIGHT - Main.PARTICLE_RADIUS);
+        }
     }
 
     public void draw(ShapeRenderer renderer) {
